@@ -1,0 +1,6 @@
+# Intellij related
+/.idea
+*.iml
+
+# Common
+*.log
