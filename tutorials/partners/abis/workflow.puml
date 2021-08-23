@@ -1,0 +1,106 @@
+@startuml
+skinparam useBetaStyle false
+skinparam componentStyle uml1
+skinparam shadowing false
+'skinparam SequenceGroupHeaderFontColor #application
+skinparam sequence {
+    ArrowColor #222266
+    LifeLineBorderColor #222266
+    LifeLineBackgroundColor #222266
+
+    ParticipantBorderColor #155AEF
+    ParticipantBackgroundColor #155AEF
+    ParticipantFontName Droid Sans Mono
+    ParticipantFontSize 15
+    ParticipantFontColor #ffffff
+
+    BoxBackgroundColor #application
+    BoxBorderColor #ffffff
+
+    GroupHeaderFontColor #ffffff
+    GroupBackgroundColor #155AEF
+    GroupBorderColor #155AEF
+}
+
+box "MOSIP cluster"
+participant  "ABIS handler stage" as handler
+participant  "ABIS middleware print stage" as middleware
+participant  "Database" as database
+participant  "Datashare" as datashare
+participant  "ActiveMQ" as activemq
+end box
+participant  "ABIS" as abis
+
+note over abis
+Creds:
+* ActiveMQ
+* Mosip creds
+end note
+
+note over datashare
+* In case of encryption enabled,
+Datashare uses partner certificate for encryption
+
+end note
+
+handler <--> handler: Stage triggered
+
+alt Request type == insert
+handler -> datashare: Create datashare url
+    note left
+    Config props to set partner &
+    policy for encryption:
+    * registration.processor.policy.id
+    * registration.processor.subscriber.id
+    end note
+    alt Encryption enabled
+        datashare <--> datashare: Encrypt data using partner certificate
+    else Encryption disabled
+        datashare <--> datashare: Data will be stored in unencrypted\nform
+    end
+end
+
+handler -> database: Save ABIS request (R)
+note left
+Requests:
+* Insert - contains datashare url for
+fetching biometrics
+* Identity- perform deduplication
+end note
+
+middleware <--> middleware: Stage triggered
+
+middleware <- database: Fetch ABIS request (R)
+
+middleware -> activemq: Add ABIS request (R) to mosip-to-abis queue
+
+abis <- activemq: Fetch ABIS request (R)
+
+abis <--> abis: Get datashare url from request (R)
+
+
+alt Request type == insert
+abis <--> abis: Get auth token from MOSIP
+
+note left
+For getting MOSIP token:
+* client, secret can be used
+end note
+
+abis -> datashare: Fetch biometrics using datashare url
+
+    alt Encryption enabled
+        abis <--> abis: Decrypt biometrics using private key
+    end
+
+end
+
+abis -> activemq: Add ABIS response (RS) to abis-to-mosip queue
+
+middleware <- activemq: Fetch ABIS response (RS)
+
+middleware -> database: Save ABIS response (RS)
+
+handler <- database: Get ABIS response (RS)
+
+@enduml
