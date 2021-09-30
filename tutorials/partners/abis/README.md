@@ -395,4 +395,49 @@ Queue details (ABIS will use it to consume and produce the message to queue):
 "typeOfQueue": "ACTIVEMQ",
 ```
 
+## Issues
 
+### Packet stuck in biographic verification
+
+#### ActiveMQ's mosip-to-abis queue message are not being consumed
+
+* ABIS configuration might be wrong, it might be pointing to wrong queue
+* ABIS is not running
+
+
+#### ABIS is consuming but not producing messages in abis-to-mosip queue
+
+* ABIS configuration might be wrong, check name of the queue the ABIS in writing to
+* Check ABIS logs for possible errors
+
+#### Issue with the MOSIP stages
+
+Run the following sql query:
+```sql
+select * from regprc.abis_request where bio_ref_id in (
+    select bio_ref_id from regprc.reg_bio_ref where reg_id = '<Registration ID>'
+);
+```
+
+```text
+If you don't get any rows: 
+    issue might be in abis handler stage or biodedupe stage
+else:
+    issue with abis-middleware stage
+```
+
+## Support/ debugging tips
+
+Query to check requests that has gone to ABIS:
+```sql
+select * from regprc.abis_request where bio_ref_id in (
+    select bio_ref_id from regprc.reg_bio_ref where reg_id = '<Registration ID>'
+);
+```
+
+Query to check responses from ABIS:
+```sql
+select * from regprc.abis_response where abis_req_id in (select id from regprc.abis_request where bio_ref_id in (
+    select bio_ref_id from regprc.reg_bio_ref where reg_id = '<Registration ID>')
+);
+```
