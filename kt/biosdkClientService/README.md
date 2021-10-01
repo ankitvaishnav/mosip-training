@@ -11,3 +11,6 @@
 
 ### BioSDK Service
 [https://github.com/mosip/mosip-ref-impl/tree/develop/biosdk-services](https://github.com/mosip/mosip-ref-impl/tree/develop/biosdk-services)
+
+Tech5 hosted service
+[http://15.206.206.205/swagger-ui.html#/Sdk](http://15.206.206.205/swagger-ui.html#/Sdk)
