@@ -1,0 +1,45 @@
+@startuml
+title BioSDK client-service (new)
+
+skinparam useBetaStyle false
+skinparam componentStyle uml1
+skinparam shadowing false
+'skinparam SequenceGroupHeaderFontColor #application
+skinparam sequence {
+    ArrowColor #222266
+    LifeLineBorderColor #222266
+    LifeLineBackgroundColor #222266
+
+    ParticipantBorderColor #application
+    ParticipantBackgroundColor #155AEF
+    ParticipantFontName Droid Sans Mono
+    ParticipantFontSize 15
+    ParticipantFontColor #ffffff
+
+    BoxBackgroundColor #application
+    BoxBorderColor #ffffff
+
+    GroupHeaderFontColor #ffffff
+    GroupBackgroundColor #155AEF
+    GroupBorderColor #155AEF
+}
+
+box "ID auth service docker"
+participant  "ID auth service" as auth #a43726
+participant  "MOSIP BioSDK client" as client
+end box
+
+box "Tech5 VM"
+participant  "Vendor service implemented on top of MOSIP BioSDK service (Tech5)" as t5service #7867FE
+end box
+
+auth -> client: Java method call (init, match, quality check, etc..)
+activate client
+client -> t5service: API request (init, match, quality check, etc..)
+activate t5service
+t5service <-> t5service: Request processing
+t5service -> client: Response {init, match, quality check, etc..}
+deactivate t5service
+client -> auth: API Response to Java class response
+deactivate client
+@enduml
