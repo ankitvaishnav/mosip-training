@@ -1,8 +1,8 @@
 # BioSDK
 
-## Setup
+## BioSDK service VM
 
-### BioSDK service VM
+### Setup
 Ideally, vendor gives you a docker image the BioSDK service from you and gives you the url to access the APIs
 
 Requirements:
@@ -20,4 +20,16 @@ Useful commands (Tech5):
 ```properties
 mosip.biosdk.default.host=http://13.233.66.241
 mosip.biosdk.default.service.url=${mosip.biosdk.default.host}/biosdk-service
+```
+
+## Windows BioSDK for Registration client
+
+### Setup
+There are no standard setup instructions as it depends on how vendor implemented the SDK.
+
+### Registration properties (mosip-config)
+```properties
+mosip.biometric.sdk.provider.finger.classname=io.mosip.mock.sdk.impl.SampleSDK
+mosip.biometric.sdk.provider.iris.classname=io.mosip.mock.sdk.impl.SampleSDK
+mosip.biometric.sdk.provider.face.classname=io.mosip.mock.sdk.impl.SampleSDK
 ```
