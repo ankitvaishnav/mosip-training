@@ -4,9 +4,9 @@ Issues:
 * [https://mosip.atlassian.net/browse/SSD-46](https://mosip.atlassian.net/browse/SSD-46)
 * [https://mosip.atlassian.net/browse/SSD-48](https://mosip.atlassian.net/browse/SSD-48)
 * [https://mosip.atlassian.net/browse/SSD-54](https://mosip.atlassian.net/browse/SSD-54)
-* [https://mosip.atlassian.net/browse/SSD-86](https://mosip.atlassian.net/browse/SSD-84)
+* [https://mosip.atlassian.net/browse/SSD-84](https://mosip.atlassian.net/browse/SSD-84)
 * [https://mosip.atlassian.net/browse/SSD-85](https://mosip.atlassian.net/browse/SSD-85)
-* [https://mosip.atlassian.net/browse/SSD-84](https://mosip.atlassian.net/browse/SSD-86)
+* [https://mosip.atlassian.net/browse/SSD-86](https://mosip.atlassian.net/browse/SSD-86)
 
 
 Policy:
